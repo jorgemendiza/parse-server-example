@@ -13,3 +13,18 @@ Parse.Cloud.define('newFunction', function(req, res) {
 		}
 	});
 });
+
+
+Parse.Cloud.define('registrarEspecialista', function(request, response) {
+	var Especialista = Parse.Object.extend("Especialista");
+	var especialista = new Especialista();	
+	especialista.save(request.params, {
+		success: function(especialista) {
+			var responseObject = new Object();
+			responseObject["especialista"] = especialista;
+			response.success(responseObject);
+	  	},error: function(especialista, error) {
+			response.error(error);
+	 	}
+	});
+});
