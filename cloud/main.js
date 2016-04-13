@@ -1,4 +1,3 @@
-
 Parse.Cloud.define('hello', function(req, res) {
   res.success('Hi');
 });
@@ -16,6 +15,11 @@ Parse.Cloud.define('newFunction', function(req, res) {
 
 
 Parse.Cloud.define('registrarEspecialista', function(request, response) {
+	
+	if (request.params["nombre"] == null) {
+		response.error({"error": "Parametros invalidos"});
+	}
+
 	var Especialista = Parse.Object.extend("Especialista");
 	var especialista = new Especialista();	
 	especialista.save(request.params, {
