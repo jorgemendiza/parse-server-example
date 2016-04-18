@@ -13,6 +13,52 @@ Parse.Cloud.define('newFunction', function(req, res) {
 	});
 });
 
+Parse.Cloud.define('getTratamientoPaciente', function(req, res) { // se debe de enviar el idUsuario(paciente)
+	var pacienteId = req.params.pacienteId;
+	if (pacienteId != null) {
+		getUserById(pacienteId , function (paciente , error) {
+			if (paciente != null) {
+				var queryTrtamiento = new Parse.Query("Tratamiento");
+				queryTrtamiento.equalTo("paciente", paciente);
+				queryTrtamiento.find({
+					success: function (tratamientos) {
+						res.success(tratamientos);
+					}, error: function (error) {
+						res.error(error);
+					}
+				});
+			}else{	
+				res.error(error);
+			}
+		});
+	}else{
+		res.error({error:"Parametros invalidos"});
+	}
+});
+
+Parse.Cloud.define('getRegistrosPaciente', function(req, res) {
+	var pacienteId = req.params.pacienteId;
+	if (pacienteId != null) {
+		getUserById(pacienteId , function (paciente , error) {
+			if (paciente != null) {
+				var queryRegistros = new Parse.Query("Registro");
+				queryRegistros.equalTo("paciente", paciente);
+				queryRegistros.find({
+					success: function (tratamientos) {
+						res.success(tratamientos);
+					}, error: function (error) {
+						res.error(error);
+					}
+				});
+			}else{	
+				res.error(error);
+			}
+		});
+	}else{
+		res.error({error:"Parametros invalidos"});
+	}
+});
+
 
 Parse.Cloud.define('registrarEspecialista', function(request, response) {
 	
@@ -32,3 +78,14 @@ Parse.Cloud.define('registrarEspecialista', function(request, response) {
 	 	}
 	});
 });
+
+function getUserById(pacienteId , callback) {
+	var queryUser = new Parse.Query(Parse.User);
+	queryUser.get(pacienteId , {
+		success: function (paciente) {
+			callback(paciente , null);
+		},error: function (error) {
+			callback(null , error);
+		}
+	});
+}
