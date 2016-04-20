@@ -146,14 +146,3 @@ function getUserById(pacienteId , callback) {
 		}
 	});
 }
-
-function getUserById(pacienteId , callback) {
-	var queryUser = new Parse.Query(Parse.User);
-	queryUser.get(pacienteId , {
-		success: function (paciente) {
-			callback(paciente , null);
-		},error: function (error) {
-			callback(null , error);
-		}
-	});
-}
