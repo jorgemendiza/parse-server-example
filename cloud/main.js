@@ -109,26 +109,12 @@ Parse.Cloud.define('registrarEspecialista', function(req, res) {
 		res.error({"error": "Parametros invalidos"});
 	}
 
-	var Especialista = Parse.Object.extend("Especialista");
-	var especialista = new Especialista();	
 	var user = new Parse.User();
-	user.set("email" , req.params.email);
-	user.set("password" , req.params.password);
-	user.set("username" , req.params.email);
-	user.set("nombre" , req.params.nombre);
-	user.set("apellido_paterno" , req.params.apellido_paterno);
-	user.set("apellido_materno" , req.params.apellido_materno); 
-	user.set("edad" , req.params.edad); 
-	user.set("cedula" , req.params.cedula); 
-	if (req.params.especialidades != null) {
-		user.set("especialidades" , req.params.especialidades);
-	}
-	user.set("esSpecialista" , true);
-	if (req.params.sexo == 0) {
-		user.set("sexo" , false);
-	}else{
-		user.set("sexo" , true);
-	}
+	user.set("email" , req.params["email"]);
+	user.set("password" , req.params["password"]);
+	user.set("username" , req.params["email"]);
+	user.set("nombre" , req.params["nombre"]);
+	
 	res.success(user);
 });
 
