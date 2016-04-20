@@ -105,17 +105,7 @@ Parse.Cloud.define('registrarPaciente', function(req, res) {
 
 Parse.Cloud.define('registrarEspecialista', function(req, res) {
 	
-	if (request.params["nombre"] == null) {
-		res.error({"error": "Parametros invalidos"});
-	}
-
-	var user = new Parse.User();
-	user.set("email" , req.params["email"]);
-	user.set("password" , req.params["password"]);
-	user.set("username" , req.params["email"]);
-	user.set("nombre" , req.params["nombre"]);
-	
-	res.success(user);
+	  res.success('Hi');
 });
 
 function getUserById(pacienteId , callback) {
