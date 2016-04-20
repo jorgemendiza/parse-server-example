@@ -120,6 +120,9 @@ Parse.Cloud.define('registrarEspecialista', function(req, res) {
 	user.set("apellido_materno" , req.params.apellido_materno); 
 	user.set("edad" , req.params.edad); 
 	user.set("cedula" , req.params.cedula); 
+	if (req.params.especialidades != null) {
+		user.set("especialidades" , req.params.especialidades);
+	}
 	user.set("esSpecialista" , true);
 	if (req.params.sexo == 0) {
 		user.set("sexo" , false);
