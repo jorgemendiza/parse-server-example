@@ -129,14 +129,7 @@ Parse.Cloud.define('registrarEspecialista', function(req, res) {
 	}else{
 		user.set("sexo" , true);
 	}
-	user.signUp({
-		success: function(user) {
-			res.success(user);
-		},
-		error: function(error) {
-			res.error("error en el signup");
-		}
-	});
+	res.success(user);
 });
 
 function getUserById(pacienteId , callback) {
