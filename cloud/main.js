@@ -105,7 +105,8 @@ Parse.Cloud.define('registrarPaciente', function(req, res) {
 
 Parse.Cloud.define('registrarEspecialista', function(req, res) {
 	var user = new Parse.User();
-	user.set("username", "my name");
+	
+	user.set("username", req.params.email);
 	user.set("password", "my pass");
 	user.set("email", "email@example.com");
 
