@@ -107,11 +107,20 @@ Parse.Cloud.define('registrarEspecialista', function(req, res) {
 	var user = new Parse.User();
 	
 	user.set("username", req.params.email);
-	user.set("password", "my pass");
-	user.set("email", "email@example.com");
-
-	// other fields can be set just like with Parse.Object
-	user.set("phone", "415-392-0202");
+	user.set("email", req.params.email);
+	user.set("password", req.params.password);
+	user.set("nombre", req.params.nombre);
+	user.set("apellido_paterno", req.params.apellido_paterno);
+	user.set("apellido_materno", req.params.apellido_materno);
+	user.set("fecha_nacimiento", req.params.fecha_nacimiento);
+	user.set("calle", req.params.calle);
+	user.set("numero", req.params.numero);
+	user.set("colonia", req.params.colonia);
+	user.set("delegacion", req.params.delegacion);
+	user.set("estado", req.params.estado);
+	user.set("codigo_postal", req.params.codigo_postal);
+	user.set("cedula", req.params.cedula);
+	user.set("telefono", req.params.telefono);
 
 	user.signUp(null, {
 	  success: function(user) {
