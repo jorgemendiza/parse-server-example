@@ -36,6 +36,9 @@ Parse.Cloud.define('getTratamientoPaciente', function(req, res) { // se debe de 
 	}
 });
 
+
+
+
 Parse.Cloud.define('getRegistrosPaciente', function(req, res) {
 	var pacienteId = req.params.pacienteId;
 	if (pacienteId != null) {
@@ -59,6 +62,46 @@ Parse.Cloud.define('getRegistrosPaciente', function(req, res) {
 	}
 });
 
+Parse.Cloud.define('registrarPaciente', function(req, res) {
+	var especialistaId = req.params.especialistaId;
+	if (especialistaId != null) {
+		getUserById(especialistaId , function (especialista , error) {
+			if (especialista != null) {
+				var user = new Parse.User();
+				user.set("email" , req.params.email);
+				user.set("password" , req.params.password);
+				user.set("username" , req.params.email);
+				user.set("nombre" , req.params.nombre);
+				user.set("apellido_paterno" , req.params.apellido_paterno);
+				user.set("apellido_materno" , req.params.apellido_materno); 
+				user.set("edad" , req.params.edad); 
+				var arrayEspecialistas = new Array();
+				arrayEspecialistas[0] = especialista;
+				user.set("especialistas" , arrayEspecialistas); 
+				user.set("esSpecialista" , false);
+				if (req.params.sexo == 0) {
+					user.set("sexo" , false);
+				}else{
+					user.set("sexo" , true);
+				}
+				user.signUp(null, {
+					success: function(user) {
+						res.success(user);
+					},
+					error: function(user, error) {
+						res.error(error);
+					}
+				});
+			}else{
+				res.error(error);
+			}
+		});
+	}else{
+		res.error({error:"Parametros invalidos"});
+	}
+});
+
+
 
 Parse.Cloud.define('registrarEspecialista', function(request, response) {
 	
@@ -68,16 +111,41 @@ Parse.Cloud.define('registrarEspecialista', function(request, response) {
 
 	var Especialista = Parse.Object.extend("Especialista");
 	var especialista = new Especialista();	
-	especialista.save(request.params, {
-		success: function(especialista) {
-			var responseObject = new Object();
-			responseObject["especialista"] = especialista;
-			response.success(responseObject);
-	  	},error: function(especialista, error) {
-			response.error(error);
-	 	}
+	var user = new Parse.User();
+	user.set("email" , req.params.email);
+	user.set("password" , req.params.password);
+	user.set("username" , req.params.email);
+	user.set("nombre" , req.params.nombre);
+	user.set("apellido_paterno" , req.params.apellido_paterno);
+	user.set("apellido_materno" , req.params.apellido_materno); 
+	user.set("edad" , req.params.edad); 
+	user.set("cedula" , req.params.cedula); 
+	user.set("esSpecialista" , true);
+	if (req.params.sexo == 0) {
+		user.set("sexo" , false);
+	}else{
+		user.set("sexo" , true);
+	}
+	user.signUp(null, {
+		success: function(user) {
+			res.success(user);
+		},
+		error: function(error) {
+			res.error(error);
+		}
 	});
 });
+
+function getUserById(pacienteId , callback) {
+	var queryUser = new Parse.Query(Parse.User);
+	queryUser.get(pacienteId , {
+		success: function (paciente) {
+			callback(paciente , null);
+		},error: function (error) {
+			callback(null , error);
+		}
+	});
+}
 
 function getUserById(pacienteId , callback) {
 	var queryUser = new Parse.Query(Parse.User);
