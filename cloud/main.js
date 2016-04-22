@@ -145,7 +145,7 @@ function getUserById(userId , callback) { //devuelve un User ParseObject a parti
 				callback(user , null);
 			}
 		},error: function (error) {
-			callback(null , error);
+			callback(null , 'El usuario no existe');
 		}
 	});
 }
