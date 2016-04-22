@@ -68,24 +68,32 @@ Parse.Cloud.define('registrarPaciente', function(req, res) {
 		getUserById(especialistaId , function (especialista , error) {
 			if (especialista != null) {
 				var user = new Parse.User();
-				user.set("email" , req.params.email);
-				user.set("password" , req.params.password);
-				user.set("username" , req.params.email);
-				user.set("nombre" , req.params.nombre);
-				user.set("apellido_paterno" , req.params.apellido_paterno);
-				user.set("apellido_materno" , req.params.apellido_materno); 
-				user.set("edad" , req.params.edad); 
+				user.set("username", req.params.email);
+				user.set("email", req.params.email);
+				user.set("password", req.params.password);
+				user.set("nombre", req.params.nombre);
+				user.set("apellido_paterno", req.params.apellido_paterno);
+				user.set("apellido_materno", req.params.apellido_materno);
+				user.set("fecha_nacimiento", req.params.fecha_nacimiento);
+				user.set("calle", req.params.calle);
+				user.set("numero", req.params.numero);
+				user.set("colonia", req.params.colonia);
+				user.set("delegacion", req.params.delegacion);
+				user.set("estado", req.params.estado);
+				user.set("codigo_postal", req.params.codigo_postal);
+				user.set("cedula", req.params.cedula);
+				user.set("telefono", req.params.telefono);
 				var arrayEspecialistas = new Array();
 				arrayEspecialistas[0] = especialista;
 				user.set("especialistas" , arrayEspecialistas); 
 				user.set("esEspecialista" , false);
 				user.signUp(null, {
-					success: function(user) {
+				  success: function(user) {
 						res.success(user);
-					},
-					error: function(user, error) {
-						res.error(error);
-					}
+				  },
+				  error: function(user, error) {
+						res.error(error);	  
+				  }
 				});
 			}else{
 				res.error(error);
