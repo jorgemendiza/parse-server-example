@@ -78,12 +78,7 @@ Parse.Cloud.define('registrarPaciente', function(req, res) {
 				var arrayEspecialistas = new Array();
 				arrayEspecialistas[0] = especialista;
 				user.set("especialistas" , arrayEspecialistas); 
-				user.set("esSpecialista" , false);
-				if (req.params.sexo == 0) {
-					user.set("sexo" , false);
-				}else{
-					user.set("sexo" , true);
-				}
+				user.set("esEspecialista" , false);
 				user.signUp(null, {
 					success: function(user) {
 						res.success(user);
@@ -97,15 +92,15 @@ Parse.Cloud.define('registrarPaciente', function(req, res) {
 			}
 		});
 	}else{
-		res.error({error:"Parametros invalidos"});
+		res.error("No se ha enviado el Id del especialista.");
 	}
 });
 
 
 
 Parse.Cloud.define('registrarEspecialista', function(req, res) {
-	var user = new Parse.User();
 	
+	var user = new Parse.User();
 	user.set("username", req.params.email);
 	user.set("email", req.params.email);
 	user.set("password", req.params.password);
@@ -121,24 +116,22 @@ Parse.Cloud.define('registrarEspecialista', function(req, res) {
 	user.set("codigo_postal", req.params.codigo_postal);
 	user.set("cedula", req.params.cedula);
 	user.set("telefono", req.params.telefono);
-
+	user.set("esEspecialista" , true);
 	user.signUp(null, {
 	  success: function(user) {
-	    // Hooray! Let them use the app now.
-	res.success(user);
+			res.success(user);
 	  },
 	  error: function(user, error) {
-	    // Show the error message somewhere and let the user try again.
 			res.error(error);	   
 	  }
 	});
 });
 
-function getUserById(pacienteId , callback) {
+function getUserById(userId , callback) { //devuelve un User ParseObject a partir de un objectId
 	var queryUser = new Parse.Query(Parse.User);
-	queryUser.get(pacienteId , {
-		success: function (paciente) {
-			callback(paciente , null);
+	queryUser.get(userId , {
+		success: function (user) {
+			callback(user , null);
 		},error: function (error) {
 			callback(null , error);
 		}
