@@ -139,7 +139,11 @@ function getUserById(userId , callback) { //devuelve un User ParseObject a parti
 	var queryUser = new Parse.Query(Parse.User);
 	queryUser.get(userId , {
 		success: function (user) {
-			callback(user , null);
+			if (user == null) {
+				callback(null , 'El usuario no existe');
+			}else{
+				callback(user , null);
+			}
 		},error: function (error) {
 			callback(null , error);
 		}
